@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <title>Task 1</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
     <script>
         AFRAME.registerComponent('my-scene', {
           init: function () {
-            // Solution for Creating Entities.
             var sceneEl = document.querySelector('a-scene'); 
             var boxEl = document.createElement('a-sphere');
             boxEl.setAttribute('material', {color: 'green'});
@@ -15,6 +15,14 @@
             boxEl.setAttribute('radius', 1);
             boxEl.setAttribute('scale', {x: 0.5, y: 0.5, z:0.5});
             sceneEl.appendChild(boxEl);
+            var t = 0;
+            function render() {
+              t += 0.01;
+              requestAnimationFrame(render);
+              boxEl.setAttribute('position', '3 '+(Math.sin(t*2)+1)+' 0');
+            }
+            render();
+
           }
         });
       </script>
@@ -22,9 +30,9 @@
 <body>
     <a-scene my-scene background="color: #FAFAFA">
         <a-assets>
-            <!-- <audio id="click-sound" crossorigin="anonymous" src="https://cdn.aframe.io/360-image-gallery-boilerplate/audio/click.ogg"></audio> -->
-            <img id="sand" src="https://i.imgur.com/bB9PZZE.jpeg">
-            <img id="snow" src="https://i.imgur.com/jeDxfRM.png">
+          <audio id="background" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav"></audio>
+          <img id="sand" src="https://i.imgur.com/bB9PZZE.jpeg">
+          <img id="snow" src="https://i.imgur.com/jeDxfRM.png">
         </a-assets>
         <!-- <a-box id="block1" position="0 0 0" rotation="-45 0 0" color="red" shadow></a-box> -->
         <a-box id="block1" position="0 2 0" rotation="-45 0 0" color="red" scale="-0.5 2 2"></a-box>
@@ -32,7 +40,23 @@
         <a-cylinder id="cylinder1" position="2 0 0" radius="0.5" height="1.5" src="#snow" color="pink"></a-box>
         <!-- <a-plane position="0.5 -0.5 0.5" rotation="-90 0 0" width="10" height="10" color="orange"></a-plane> -->
         <a-plane position="0.5 -0.5 0.5" rotation="-90 0 0" src="#sand" width="10" height="10"></a-plane>
-        <a-camera position="2 3 10" ></a-camera>
+
+        <a-box position="2 3 3" rotation="0 45 0" color="#21130d"
+          event-set__enter="_event: mouseenter; color: #873e23"
+          event-set__leave="_event: mouseleave; color: #21130d">
+        </a-box>
+
+        <a-text
+        value="Welcome"
+        color="#21130d"
+        align="center"
+        position="1 4 4"></a-text>
+
+        <a-camera position="2 3 10" >
+          <a-cursor>
+        </a-cursor>
+      </a-camera>
+      <a-sound src="#background" autoplay="true"></a-sound>
       </a-scene>
     </body>
 </html>
